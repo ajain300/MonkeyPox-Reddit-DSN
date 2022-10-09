@@ -36,8 +36,8 @@ posts.to_csv("posts.csv", index=False)
 
 
 reddit = praw.Reddit(
-    client_id="piXz-eLpTpGmahnm2EPScw",
-    client_secret="hUE09YbC09uQUiahDDXC_ihd1cZG5w",
+    client_id="",# insert client id here
+    client_secret="", # insert client secret here
     user_agent="MonkeyPoxDiscussionScraper"
 )
 
