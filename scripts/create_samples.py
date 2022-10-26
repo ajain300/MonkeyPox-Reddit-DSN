@@ -7,8 +7,8 @@ from dataclasses import dataclass
 import time
 
 reddit = praw.Reddit(
-    client_id="piXz-eLpTpGmahnm2EPScw",
-    client_secret="hUE09YbC09uQUiahDDXC_ihd1cZG5w",
+    client_id="",
+    client_secret="",
     user_agent="MonkeyPoxDiscussionScraper"
 )
 
