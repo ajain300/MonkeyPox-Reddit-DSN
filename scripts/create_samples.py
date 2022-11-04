@@ -7,8 +7,8 @@ from dataclasses import dataclass
 import time
 
 reddit = praw.Reddit(
-    client_id="piXz-eLpTpGmahnm2EPScw",
-    client_secret="hUE09YbC09uQUiahDDXC_ihd1cZG5w",
+    client_id="",
+    client_secret="",
     user_agent="MonkeyPoxDiscussionScraper"
 )
 
@@ -27,7 +27,7 @@ class CommentRetriever:
     return comment_chains
 
   def dfs(self, cur_chain: List[Comment], comments: CommentForest, comment_chains: List[List[Comment]]) -> None:
-    if len(comments) == 0:
+    if len(comments) == 0 and len(cur_chain) > 0:
       comment_chains.append(cur_chain)
       return
     for comment in comments:

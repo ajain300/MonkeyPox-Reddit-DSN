@@ -66,7 +66,7 @@ for submission_id in tqdm(posts['Id']):
     leftmost_comments_per_post.append(post_comments)
   
 leftmost_comments_per_post = pd.DataFrame(leftmost_comments_per_post, columns=["Id", "Comments"]) ### might want to collect comment authors
-leftmost_comments_per_post.to_csv("leftmost.csv", index=False)
+leftmost_comments_per_post.to_csv("../data/leftmost.csv", index=False)
 
 leftmost_comments_per_post.head()
 
