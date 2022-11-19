@@ -6,6 +6,11 @@ from collections import Counter
 from tqdm import tqdm
 
 
+DF_FILEPATH = 'data/samples/initial_labeled_data.xlsx'
+LIWC_FILEPATH = 'data/LIWC2015_English.dic'
+LIWC_SCORES_FILEPATH = 'data/liwc_scores.xlsx'
+
+#### HELPER METHODS FOR TOKENIZING AND LIWC PARSING A 
 def tokenize(input_sentence):
     # you may want to use a smarter tokenizer
     for match in re.finditer(r'\w+', input_sentence, re.UNICODE):
@@ -13,17 +18,17 @@ def tokenize(input_sentence):
 
 
 def get_sentence_parse(input_sentence):
-    sentence_tokens = tokenize(input_sentence)
+    return tokenize(input_sentence)
 
 
 def get_liwc_cats_for_comment(comment, parse_function):
-    comment_tokens = tokenize(comment)
+    comment_tokens = get_sentence_parse(comment)
     counter = Counter(
         category for token in comment_tokens for category in parse_function(token))
     return counter.most_common()
 
 
-def build_liwc_parse_for_samples(df_filepath, liwc_filepath, scores_filepath):
+def build_liwc_excel_for_samples(df_filepath, liwc_filepath, scores_filepath):
     df = pd.read_excel(df_filepath, index_col=0)
     comment_liwc_categories = [[], [], [], []]
     parse, category_names = liwc.load_token_parser(liwc_filepath)
@@ -42,12 +47,6 @@ def build_liwc_parse_for_samples(df_filepath, liwc_filepath, scores_filepath):
     df["C3_LIWC"] = pd.Series(comment_liwc_categories[2])
     df["Whole_Discussion_LIWC"] = pd.Series(comment_liwc_categories[3])
 
-    df.to_excel(liwc_scores_filepath, index=False)
+    df.to_excel(scores_filepath, index=False)
     return df
 
-
-df_filepath = 'data/samples/initial_labeled_data.xlsx'
-liwc_filepath = 'data/LIWC2015_English.dic'
-liwc_scores_filepath = 'data/liwc_scores.xlsx'
-
-build_liwc_parse_for_samples(df_filepath, liwc_filepath, liwc_scores_filepath)
