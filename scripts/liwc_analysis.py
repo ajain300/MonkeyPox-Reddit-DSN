@@ -100,3 +100,13 @@ def get_categories_avg_per_discussion_for_category(liwc_category: str, col_name:
                 category_avg += row_avg_value
 
     return category_avg / num_samples_in_subselection
+
+
+def get_p_vals_for_two_categories(category_1: str, category_2: str, col_name: str, col_val: Union[str, int], df: pd.DataFrame):
+    pass
+
+
+df = pd.read_excel(LIWC_SCORES_FILEPATH)
+category = "article (Articles)"
+cats = get_categories_avg_per_discussion_for_category(category, "Agree", 0, df)
+print(cats)
