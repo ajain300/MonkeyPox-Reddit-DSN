@@ -7,12 +7,13 @@ from tqdm import tqdm
 from ast import literal_eval
 import itertools
 from typing import Union
+from scipy import stats
 
 
 # file for original un-LIWC'd labeled data
-DF_FILEPATH = 'notebooks/final_cleaned_data.xlsx'
+DF_FILEPATH = 'data/total_comment_labels.xlsx'
 LIWC_FILEPATH = 'data/LIWC2015_English.dic'
-LIWC_SCORES_FILEPATH = 'data/liwc_scores.xlsx'
+LIWC_SCORES_FILEPATH = 'data/labels_liwc_scores.xlsx'
 
 #### HELPER METHODS FOR TOKENIZING AND LIWC PARSING A DISCUSSION#################################################
 
@@ -89,24 +90,42 @@ def get_categories_avg_per_discussion_for_category(liwc_category: str, col_name:
     num_samples_in_subselection = subselection.shape[0]
 
     # for all samples with this qualification, we want to see if that sample has the particular liwc category of interest present
-    for i, row in tqdm(subselection.iterrows()):
-        whole_discussion_liwc_scores = literal_eval(
-            row["Whole_Discussion_LIWC"])
+    category_avg = 0
+    category_row_scores = []
+    for _, row in tqdm(subselection.iterrows()):  # for each sample in this subselection
         avgs = get_categories_avg_per_discussion_for_row(row)
-        category_avg = 0
+        row_score = 0
         # average the liwc score per word across all samples
         for category, row_avg_value in avgs:
             if category == liwc_category:
                 category_avg += row_avg_value
+                row_score += row_avg_value
+        category_row_scores.append(row_score)
 
-    return category_avg / num_samples_in_subselection
+    return category_avg / num_samples_in_subselection, category_row_scores
 
 
-def get_p_vals_for_two_categories(category_1: str, category_2: str, col_name: str, col_val: Union[str, int], df: pd.DataFrame):
-    pass
+def get_p_vals_for_two_subsamples(category: str, col_name_1: str, col_val_1: Union[str, int],
+                                   col_name_2: str, col_val_2: Union[str, int], 
+                                  df: pd.DataFrame):
+    subsample_1_scores = get_categories_avg_per_discussion_for_category(
+        category, col_name=col_name_1, col_val=col_val_1, df=df)
+    subsample_2_scores = get_categories_avg_per_discussion_for_category(
+        category, col_name=col_name_2, col_val=col_val_2, df=df)
+    
+    ttest = stats.ttest_ind(subsample_1_scores[1], subsample_2_scores[1], equal_var=False)
+    print("subsample 1 mean is " + str(np.mean(subsample_1_scores[1])))
+    print("subsample 1 std dv is: " + str(np.std(subsample_1_scores[1])))
+    print("subsample 2 mean is " + str(np.mean(subsample_2_scores[1])))
+    print("subsample 2 std dv is: " + str(np.std(subsample_2_scores[1])))
+    return ttest
 
 
 df = pd.read_excel(LIWC_SCORES_FILEPATH)
-category = "article (Articles)"
-cats = get_categories_avg_per_discussion_for_category(category, "Agree", 0, df)
-print(cats)
+liwc_category = 'informal (Informal Language)'
+col_name_1 = 'se'
+col_val_1 = 1
+col_name_2 = 'se'
+col_val_2 = 0
+pvals = get_p_vals_for_two_subsamples(liwc_category, col_name_1=col_name_1, col_val_1=col_val_1, col_name_2=col_name_2, col_val_2=col_val_2, df=df)
+print(pvals)
