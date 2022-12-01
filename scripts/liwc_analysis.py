@@ -172,9 +172,13 @@ def get_p_vals_for_two_subsamples_mult_cols(category: str, col_val_1: Union[str,
 
 df = pd.read_excel(LIWC_SCORES_FILEPATH)
 liwc_category = 'informal (Informal Language)'
-col_name_1 = 'se'
-col_val_1 = 1
-col_name_2 = 'se'
-col_val_2 = 0
-pvals = get_p_vals_for_two_subsamples(liwc_category, col_name_1=col_name_1, col_val_1=col_val_1, col_name_2=col_name_2, col_val_2=col_val_2, df=df)
+# col_name_1 = 'ci'
+# col_val_1 = 1
+# col_name_2 = 'ci'
+# col_val_2 = 0
+# pvals = get_p_vals_for_two_subsamples(liwc_category, col_name_1=col_name_1, col_val_1=col_val_1, col_name_2=col_name_2, col_val_2=col_val_2, df=df)
+# print(pvals)
+
+
+pvals = get_p_vals_for_two_subsamples_mult_cols(liwc_category, 0,0,0, 0,0,1, df=df)
 print(pvals)
