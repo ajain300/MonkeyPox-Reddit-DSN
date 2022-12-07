@@ -169,18 +169,38 @@ def get_p_vals_for_two_subsamples_mult_cols(category: str, col_val_1: Union[str,
     print("subsample 2 std dv is: " + str(np.std(subsample_2_scores[1])))
     return ttest
 
+def get_anova_for_lda_groups(category: str, df: pd.DataFrame):
+    group_0 = get_liwc_category_avg_for_single_col_subsample(category, col_name='topic', col_val=0, df=df)
+    group_1 = get_liwc_category_avg_for_single_col_subsample(category, col_name='topic', col_val=1, df=df)
+    group_2 = get_liwc_category_avg_for_single_col_subsample(category, col_name='topic', col_val=2, df=df)
+    group_3 = get_liwc_category_avg_for_single_col_subsample(category, col_name='topic', col_val=3, df=df)
+    group_4 = get_liwc_category_avg_for_single_col_subsample(category, col_name='topic', col_val=4, df=df)
+    h_stat, p_val = stats.kruskal(group_0[1], group_1[1], group_2[1], group_3[1], group_4[1], nan_policy='propagate')
 
-build_liwc_excel_for_samples(DF_FILEPATH, LIWC_FILEPATH, LIWC_SCORES_FILEPATH)
+    return h_stat, p_val
 
+
+
+####### Example methods for running/re-running our experiments
+
+
+## Method for building the LIWC scores from our dataset file "total_comments_labels.xlsx"
+# build_liwc_excel_for_samples(DF_FILEPATH, LIWC_FILEPATH, LIWC_SCORES_FILEPATH)
+
+
+## Example of running pairwise Welch's t-test runs for 1-feature based subsets of our data
 # df = pd.read_excel(LIWC_SCORES_FILEPATH)
-# liwc_category = 'netspeak (Netspeak)'
-# col_name_1 = 'se'
-# col_val_1 = 1
-# col_name_2 = 'se'
-# col_val_2 = 0
-# pvals = get_p_vals_for_two_subsamples(liwc_category, col_name_1=col_name_1, col_val_1=col_val_1, col_name_2=col_name_2, col_val_2=col_val_2, df=df)
-# print(pvals)
+# liwc_category = 'informal (Informal Language)'
+# # col_name_1 = 'topic'
+# # col_val_1 = 3
+# # col_name_2 = 'topic'
+# # col_val_2 = 4
+# # pvals = get_p_vals_for_two_subsamples(liwc_category, col_name_1=col_name_1, col_val_1=col_val_1, col_name_2=col_name_2, col_val_2=col_val_2, df=df)
+# # print(pvals)
 
+## Example of running KW test experiment for LDA groupings
+# # print(get_anova_for_lda_groups(liwc_category, df))
 
-# # pvals = get_p_vals_for_two_subsamples_mult_cols(liwc_category, 0,0,0, 0,0,1, df=df)
-# print(pvals)
+## Example of running pairwise Welch's t-test experiments for 3-feature based subsets of our data
+# # # pvals = get_p_vals_for_two_subsamples_mult_cols(liwc_category, 0,0,0, 0,0,1, df=df)
+# # print(pvals)
