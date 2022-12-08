@@ -35,38 +35,39 @@ posts
 posts.to_csv("posts.csv", index=False)
 
 
-reddit = praw.Reddit(
-    client_id="",# insert client id here
-    client_secret="", # insert client secret here
-    user_agent="MonkeyPoxDiscussionScraper"
-)
+# We use create_samples.py to scrape the discussions.
+# reddit = praw.Reddit(
+#     client_id="",# insert client id here
+#     client_secret="", # insert client secret here
+#     user_agent="MonkeyPoxDiscussionScraper"
+# )
 
-leftmost_comments_per_post = []
-for submission_id in tqdm(posts['Id']):
-  post_comments = [submission_id, [], []]
-  submission = reddit.submission(submission_id)
-  try: 
-    ### try setting limit to 0; it effectively removes pagination and should speed up the script
-    submission.comments.replace_more(limit=None)
-    comment_queue = [submission.comments[0]]  # Seed with top-level first comment thread; change to [:] for all branches
-                                              # not just left-most
-    if comment_queue[0].author.name == "AutoModerator":
-          ### honestly not sure if this will work to replace the automoderator comments with the next left-most top level comment thread
-          try:
-            comment_queue = [submission.comments[1]]
-          except:
-            continue ## will continue move us to the next instance in the for loop? i don't know how to program
-    while comment_queue:
-      comment = comment_queue.pop(0)
-      post_comments[1].append(comment.body)
-      post_comments[2].append(comment.author.name)
-      comment_queue.extend(comment.replies)
-    leftmost_comments_per_post.append(post_comments)
-  except:
-    leftmost_comments_per_post.append(post_comments)
+# leftmost_comments_per_post = []
+# for submission_id in tqdm(posts['Id']):
+#   post_comments = [submission_id, [], []]
+#   submission = reddit.submission(submission_id)
+#   try: 
+#     ### try setting limit to 0; it effectively removes pagination and should speed up the script
+#     submission.comments.replace_more(limit=None)
+#     comment_queue = [submission.comments[0]]  # Seed with top-level first comment thread; change to [:] for all branches
+#                                               # not just left-most
+#     if comment_queue[0].author.name == "AutoModerator":
+#           ### honestly not sure if this will work to replace the automoderator comments with the next left-most top level comment thread
+#           try:
+#             comment_queue = [submission.comments[1]]
+#           except:
+#             continue ## will continue move us to the next instance in the for loop? i don't know how to program
+#     while comment_queue:
+#       comment = comment_queue.pop(0)
+#       post_comments[1].append(comment.body)
+#       post_comments[2].append(comment.author.name)
+#       comment_queue.extend(comment.replies)
+#     leftmost_comments_per_post.append(post_comments)
+#   except:
+#     leftmost_comments_per_post.append(post_comments)
   
-leftmost_comments_per_post = pd.DataFrame(leftmost_comments_per_post, columns=["Id", "Comments"]) ### might want to collect comment authors
-leftmost_comments_per_post.to_csv("../data/leftmost.csv", index=False)
+# leftmost_comments_per_post = pd.DataFrame(leftmost_comments_per_post, columns=["Id", "Comments"]) ### might want to collect comment authors
+# leftmost_comments_per_post.to_csv("../data/leftmost.csv", index=False)
 
-leftmost_comments_per_post.head()
+# leftmost_comments_per_post.head()
 

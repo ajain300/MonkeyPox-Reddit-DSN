@@ -10,6 +10,14 @@ Install conda env before running LDA notebook:
 
 
 ### LIWC Instructions/Requirements
-LIWC File requires/uses the LIWC_2015.dic file. This needs to be supplied by the user as a license must be purchased to acquire and use this file.
-To run the work, you can just run the liwc script in ```scripts/liwc_analysis.py```
-Some examples on how to run the various methods for calculating t-test, LIWC category word usage, and Kruskal-Wallis tests are present at the bottom of the file.
+LIWC File requires/uses the LIWC_2015.dic file. 
+
+This needs to be supplied by the user as a license must be purchased to acquire and use this file.
+
+To run the code for the LIWC analysis, you can just run the python liwc script in ```scripts/liwc_analysis.py```. 
+
+This file serves as both a collection of methods for analysis and a playground (at the bottom of the file) to run methods. Some code comments and type-hints are provided in methods to generally explain how the methods work.
+
+NOTE: You will need to define the path variables at the beginning of the script but recommended file paths are provided in the code comments.
+
+Some examples on how to run the various methods for calculating t-test, LIWC category word usage, and Kruskal-Wallis tests are present at the bottom of the file. Feel free to experiment with them at your leisure.
