@@ -10,10 +10,11 @@ from typing import Union
 from scipy import stats
 
 
-# file for original un-LIWC'd labeled data
-DF_FILEPATH = 'data/total_comment_labels.xlsx'
-LIWC_FILEPATH = 'data/LIWC2015_English.dic'
-LIWC_SCORES_FILEPATH = 'data/labels_liwc_scores.xlsx'
+# filepaths
+DF_FILEPATH = '' ## path to the dataframe you want to load data from. most likely "data/final_dataset.xlsx"
+LIWC_FILEPATH = '' ## path to your copy of the LIWC_2015.dic file
+LIWC_SCORES_FILEPATH = '' ### path to the .xslx file that contains the LIWC counter string representations. 
+                          ### most likely "data/liwc/labels_liwc_scores.xlsx" though you can overwrite using methods below
 
 #### HELPER METHODS FOR TOKENIZING AND LIWC PARSING A DISCUSSION#################################################
 
