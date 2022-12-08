@@ -14,7 +14,7 @@ api = PushshiftAPI()
 q = "monkeypox | monkey pox"
 ### set limit to be number of posts we want to collect
 ### i think maybe 5k might be a good enough size to get a good enough comment base 
-submissions = api.search_submissions(q=q, limit=2000)
+submissions = api.search_submissions(q=q, limit=5000)
 
 c = 0
 
@@ -32,7 +32,7 @@ for post in submissions:
 
 posts = pd.DataFrame(posts, columns=["Title", "Body", "Subreddit", "Id", "Created UTC", "Author"])
 posts
-posts.to_csv("posts.csv", index=False)
+posts.to_csv("../data/posts.csv", index=False)
 
 
 # We use create_samples.py to scrape the discussions.
